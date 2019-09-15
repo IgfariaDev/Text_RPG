@@ -4,8 +4,17 @@
 #include <windows.h>
 #include <string.h>
 #include "mobs.h"
+#include "vari.h"
+#include "text.h"
 
 using namespace std;
+
+//imported funcions
+
+int decision(int x);
+int textCounter(char arrayT[]);
+void Text(char x[]);
+void textBlink(char text[]);
 
 struct jogador{
 		int vida;
@@ -31,47 +40,10 @@ struct jogador{
 
 */
 
-//charecters counting, Valeu Luan.
-
-int textCounter(char arrayT[]){
-	int valorValido = 0;
-    	for(int i=0; i<200; i++){
-    	    if(arrayT[i] > 0){
-    	        valorValido++;
-    	    } else{
-   	     	    return valorValido;
-   	        	break;
-    	    }
-   	}
-}
-
-//Text printing
-
-void Text(char x[]){
-	int textVal;
-	textVal=textCounter(x);
-	for(int i =0; i<textVal; i++){
-		cout<<x[i];
-		Sleep(90);
-	}
-	cout<<endl;
-	Sleep(500);
-}
-
-//Blinking Text
-void textBlink(char text[]){
-	for(int i=0;i<6;i++){
-		cout<<text<<endl;
-		Sleep(400);
-		system("cls");
-		Sleep(200);
-	}
-}
-
 //Aesthetic dot load
 
-void dotLoad(int ticks){
-	for(int i; i<=ticks;i++){
+void dotLoad(){
+	for(int i; i<=5;i++){
 		cout<<"."<<endl;
 		system("cls");
 		cout<<".."<<endl;
@@ -187,15 +159,27 @@ void Class(){
 		break;			
 	}
 }
+int lifeTest(int life,int damage){
+	system("cls");
+	life+=damage;
+	cout<<damage<<" hp"<<endl;
+	system("pause");
+	system("cls");
+	if(life<0){
+		char end[]={"============\n| Gameover |\n============"};
+		textBlink(end);
+		exit(0);
+	}
+}
 
 main(){
 
-	int time=5;
+	int time;
+	int result;
 	setlocale(LC_ALL, "Portuguese");
-	
 	//game begining
 	
-	dotLoad(time);
+	dotLoad();
 	char text[]={"Voce acaba de acordar e esta tudo escuro."};
 	char text1[]={"Voce sente algo molhado em sua mao."};
 	char text2[]={"Em sua bolsa tem um isqueiro e uma faca embainhada."};
@@ -205,6 +189,7 @@ main(){
 	
 	//character set
 	
+	player.vida=100;
 	char text3[]={"Tente lembrar seu nome"};
 	Text(text3);
 	Sleep(1000);
@@ -240,8 +225,10 @@ main(){
 	char skillD[]={"========================= \n|  Alquimia Descoberta  | \n========================= \n"};
 	textBlink(skillD);
 	system("pause");
-
+	
+	time=1;
 	char chose[]={"O monstro está comendo."};
 	cout <<"\n[1] Correr"<<endl<<"[2] Se esconder"<<endl;
-	
+	result=decision(time);
+	lifeTest(player.vida,result);
 }
